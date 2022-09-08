@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 
 import { Nav, Button, Form, FormControl, Navbar } from "react-bootstrap";
 
-import GenerateVideoCard from "./components/GenerateVideoCard";
+import GenerateVideoCard from "./GenerateVideoCard";
 
 export default function Home() {
   const [gameName, setGameName] = useState("");

@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import GetToken from '../feature/GetToken';
-import GetAccess from "../feature/GetAccess";
-import GenerateIFrame from "./GenerateIFrame";
-import IFrame from "./IFrame";
+import GetToken from '../lib/GetToken';
+import GetAccess from "../lib/GetAccess";
+import GenerateIFrame from "../components/GenerateIFrame";
 import { Card, CardColumns, Alert, Container } from 'react-bootstrap';
-import loader from '../feature/Loader';
+import { loader } from '../lib/Loader';
 
 function GenerateVideoCard({ gameName }) {
     const [twitchGameData, setTwitchGameData] = useState([]);
