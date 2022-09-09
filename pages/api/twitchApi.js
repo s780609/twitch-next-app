@@ -14,8 +14,10 @@ export default async function handler(req, res) {
       headers: headersList
     });
 
-    res.status(200).json(await result.text())
+    res.status(200).send(await result.text())
   }
-
-  res.status(200).json({ name: 'John Doe' })
+  else {
+    // example 
+    res.status(200).json({ name: 'John Doe' })
+  }
 }
