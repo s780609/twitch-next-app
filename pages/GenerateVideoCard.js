@@ -140,7 +140,7 @@ function GenerateVideoCard({ gameName }) {
         }
 
         const responseGameVideo = await fetchApi(gameId);
-        console.log(responseGameVideo);
+        console.log(responseGameVideo.text());
         const json = await responseGameVideo.json()
         console.log(json);
         const temp = JSON.parse(json)

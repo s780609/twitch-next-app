@@ -9,12 +9,16 @@ export default async function handler(req, res) {
       "Authorization": "Bearer 8kmqhiiam4qfk7uf5urwdflyri5r56"
     }
 
-    let result = await fetch(twitchVideosApi, {
-      method: "GET",
-      headers: headersList
-    });
+    try {
+      let result = await fetch(twitchVideosApi, {
+        method: "GET",
+        headers: headersList
+      });
 
-    res.status(200).send(await result.text())
+      res.status(200).send(await result.text())
+    } catch(e){
+      res.status(200).send("error message: " + e.message)
+    }
   }
   else {
     // example 
