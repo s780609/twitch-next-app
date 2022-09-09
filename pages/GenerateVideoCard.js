@@ -77,12 +77,18 @@ function GenerateVideoCard({ gameName }) {
 
                 for (let i = 0; i < responseData.length; i++) {
                     let gameId = responseData[i].id;
-                    const data = await getGameData(gameId);
 
-                    if (data != null && data.length != 0) {
-                        setTwitchGameData(data);
-                        loader.close();
-                        return;
+                    try {
+                        const data = await getGameData(gameId);
+
+                        if (data != null && data.length != 0) {
+                            setTwitchGameData(data);
+                            loader.close();
+                            return;
+                        }
+                    }
+                    catch (e) {
+                        console.error(e);
                     }
                 }
 
@@ -140,14 +146,17 @@ function GenerateVideoCard({ gameName }) {
         }
 
         const responseGameVideo = await fetchApi(gameId);
-        console.log(responseGameVideo.text());
-        const json = await responseGameVideo.json()
-        console.log(json);
-        const temp = JSON.parse(json)
-        console.log(temp);
-        const data = temp.data;
-        console.log(data);
-        return data;
+        console.log(responseGameVideo);
+
+        if (responseGameVideo.status === 200) {
+            const json = await responseGameVideo.json()
+            const temp = JSON.parse(json)
+            const data = temp.data;
+            return data;
+        }
+        else {
+            throw new Error()
+        }
     }
 
     // get developer video

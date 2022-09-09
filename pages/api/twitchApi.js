@@ -1,4 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+var https = require("https");
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
@@ -10,14 +11,44 @@ export default async function handler(req, res) {
     }
 
     try {
-      let result = await fetch(twitchVideosApi, {
+      // ********************************
+      // use https of nodejs
+      var httpsRequestResultStr = "";
+      var httpRequest = https.request({
+        host: 'api.twitch.tv',
+        port: 443,
+        path: '/helix/videos?game_id=29595&first=20',
         method: "GET",
         headers: headersList
+      }, (response) => {
+        response.setEncoding('utf8');
+        response.on("data", (chunk) => {
+          httpsRequestResultStr += chunk;
+        });
+
+        response.on('end', function () {
+          console.log(httpsRequestResultStr);
+          res.status(200).json(httpsRequestResultStr)
+        });
       });
 
-      res.status(200).send(await result.text())
-    } catch(e){
-      res.status(200).send("error message: " + e.message)
+      httpRequest.on('error', function (e) {
+        console.log('problem with request: ' + e.message);
+      });
+
+      httpRequest.end();
+
+      // ********************************
+
+      // let result = await fetch(twitchVideosApi, {
+      //   method: "GET",
+      //   headers: headersList
+      // });
+
+      //res.status(200).json(await result.text())
+    } catch (e) {
+      console.log(e);
+      res.status(500).send("error message: " + e.message)
     }
   }
   else {
