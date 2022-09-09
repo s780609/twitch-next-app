@@ -145,17 +145,22 @@ function GenerateVideoCard({ gameName }) {
             return;
         }
 
-        const responseGameVideo = await fetchApi(gameId);
-        console.log(responseGameVideo);
+        try {
+            const responseGameVideo = await fetchApi(gameId);
+            console.log(responseGameVideo);
 
-        if (responseGameVideo.status === 200) {
-            const json = await responseGameVideo.json()
-            const temp = JSON.parse(json)
-            const data = temp.data;
-            return data;
+            if (responseGameVideo.status === 200) {
+                const json = await responseGameVideo.json()
+                const temp = JSON.parse(json)
+                const data = temp.data;
+                return data;
+            }
+            else {
+                throw new Error()
+            }
         }
-        else {
-            throw new Error()
+        catch (e) {
+            console.error(e)
         }
     }
 

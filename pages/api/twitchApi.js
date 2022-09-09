@@ -2,6 +2,8 @@
 var https = require("https");
 
 export default async function handler(req, res) {
+  res.status(200).json({ name: 'John Doe' })
+
   if (req.method === "GET") {
     const twitchVideosApi = `https://api.twitch.tv/helix/videos?game_id=29595&first=20`;
 
