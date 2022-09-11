@@ -4,12 +4,16 @@ var https = require("https");
 export default function handler(req, res) {
   //res.status(200).json({ name: 'John Doe' })
 
+  const authorizationValue = req.query["authorization"];
+  const clientId = req.query["client-id"];
+  const gameName = req.query["gamename"];
+
   if (req.method === "GET") {
-    const twitchVideosApi = `https://api.twitch.tv/helix/videos?game_id=29595&first=20`;
+    const twitchVideosApi = `https://api.twitch.tv/helix/videos?game_id=${gameName}&first=5`;
 
     let headersList = {
-      "Client-Id": "87taxodv5s6tl484merlchj3rufwds",
-      "Authorization": "Bearer 8kmqhiiam4qfk7uf5urwdflyri5r56"
+      "Client-Id": clientId,
+      "Authorization": `Bearer ${authorizationValue}`
     }
 
     try {

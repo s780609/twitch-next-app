@@ -25,11 +25,11 @@ function GenerateVideoCard({ gameName }) {
 
     const fetchApi = useCallback(() => {
         async function fetchApi(gameId) {
-            return await fetch(`/api/twitchApi`);
+            return await fetch(`/api/twitchApi` + `/?authorization=${accessToken}&client-id=${clientId}&gamename=${gameName}`);
         }
 
         return fetchApi();
-    }, [])
+    }, [accessToken, clientId, gameName])
 
     useEffect(() => {
         OIDCImplicitCodeFlow();
@@ -102,8 +102,9 @@ function GenerateVideoCard({ gameName }) {
                 if (responseData != undefined && responseData.length != 0) {
                     for (let i = 0; i < responseData.length; i++) {
                         let gameId = responseData[i].id;
+                        
                         const data = await getGameData(gameId);
-
+                        
                         if (data != null && data.length != 0) {
                             setTwitchGameData(data);
                             loader.close();
@@ -147,7 +148,6 @@ function GenerateVideoCard({ gameName }) {
 
         try {
             const responseGameVideo = await fetchApi(gameId);
-            console.log(responseGameVideo);
 
             if (responseGameVideo.status === 200) {
                 const json = await responseGameVideo.json()
