@@ -9,7 +9,7 @@ export default function handler(req, res) {
   const gameName = req.query["gamename"];
 
   if (req.method === "GET") {
-    const twitchVideosApi = `https://api.twitch.tv/helix/videos?game_id=${gameName}&first=5`;
+    const twitchVideosApi = `https://api.twitch.tv/helix/videos?game_id=${gameName}&first=20`;
 
     let headersList = {
       "Client-Id": clientId,
@@ -23,7 +23,7 @@ export default function handler(req, res) {
       var httpRequest = https.request({
         host: 'api.twitch.tv',
         port: 443,
-        path: '/helix/videos?game_id=29595&first=20',
+        path: '/helix/videos?game_id=29595&first=5',
         method: "GET",
         headers: headersList
       }, (response) => {
