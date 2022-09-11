@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 var https = require("https");
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
   res.status(200).json({ name: 'John Doe' })
 
   // if (req.method === "GET") {
