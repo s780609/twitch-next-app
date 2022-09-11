@@ -30,7 +30,7 @@ export default async function handler(req, res) {
 
         response.on('end', function () {
           console.log(httpsRequestResultStr);
-          res.status(200).json(httpsRequestResultStr)
+          res.status(200).send(httpsRequestResultStr)
         });
       });
 
