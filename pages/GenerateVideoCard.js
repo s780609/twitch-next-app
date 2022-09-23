@@ -23,13 +23,10 @@ function GenerateVideoCard({ gameName }) {
     const pathname = new URL(redirect_uri).pathname == "/" ? "" : new URL(redirect_uri).pathname;
     const parentDomain = new URL(redirect_uri).hostname // + pathname; //+ port //+ new URL(redirect_uri).pathname;
 
-    const fetchApi = useCallback(() => {
-        async function fetchApi(gameId) {
-            return await fetch(`/api/twitchApi` + `/?authorization=${accessToken}&client-id=${clientId}&gamename=${gameName}`);
-        }
-
-        return fetchApi();
-    }, [accessToken, clientId, gameName])
+    async function fetchApi(gameId) {
+        const response = await axios.get(`/api/twitchApi` + `/?authorization=${accessToken}&client-id=${clientId}&gameId=${gameId}`);
+        return response;
+    }
 
     useEffect(() => {
         OIDCImplicitCodeFlow();
@@ -102,9 +99,9 @@ function GenerateVideoCard({ gameName }) {
                 if (responseData != undefined && responseData.length != 0) {
                     for (let i = 0; i < responseData.length; i++) {
                         let gameId = responseData[i].id;
-                        
+
                         const data = await getGameData(gameId);
-                        
+
                         if (data != null && data.length != 0) {
                             setTwitchGameData(data);
                             loader.close();
@@ -145,14 +142,29 @@ function GenerateVideoCard({ gameName }) {
         if (!gameId) {
             return;
         }
-
+        console.log(gameId);
         try {
-            const responseGameVideo = await fetchApi(gameId);
+            const responseGameVideo = 
+            // Next.js API
+            //await fetchApi(gameId);
+
+            // normal way: twitch api
+            await axios.get(`https://api.twitch.tv/helix/videos?game_id=${gameId}&first=5`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                        "Client-Id": `${clientId}`,
+                        'accept-language': ''
+                    }
+                });
 
             if (responseGameVideo.status === 200) {
-                const json = await responseGameVideo.json()
-                const temp = JSON.parse(json)
-                const data = temp.data;
+                if (typeof responseGameVideo.data === 'string') {
+                    const data = JSON.parse(responseGameVideo.data)
+                    return data.data;
+                }
+
+                const data = responseGameVideo.data.data;
                 return data;
             }
             else {
