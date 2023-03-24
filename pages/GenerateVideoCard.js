@@ -4,13 +4,7 @@ import axios from "axios";
 import GetToken from "../lib/GetToken";
 import GetAccess from "../lib/GetAccess";
 import GenerateIFrame from "../components/GenerateIFrame";
-import {
-  Card,
-  CardColumns,
-  Alert,
-  Container,
-  CardGroup,
-} from "react-bootstrap";
+import { Card, Button, Alert, Container } from "react-bootstrap";
 import { loader } from "../lib/Loader";
 import IFrame from "../components/IFrame";
 
@@ -283,6 +277,10 @@ function GenerateVideoCard({ gameName }) {
     }
   };
 
+  const openLiveStream = (e) => {
+    console.log(e.currentTarget);
+  };
+
   return (
     <>
       {/* dev video */}
@@ -327,10 +325,22 @@ function GenerateVideoCard({ gameName }) {
             .replace("{height}", "281");
           return (
             <>
-              <Card style={{ width: "24rem" }}>
-                <Card.Img src={imgUrl}></Card.Img>
-                <Card.Title>{stream.title}</Card.Title>
-              </Card>
+              <Button
+                style={{
+                  padding: "0",
+                  backgroundColor: "transparent",
+                  border: "solid black",
+                  color: "black",
+                  zIndex: "100",
+                }}
+                id={stream.id}
+                onClick={openLiveStream}
+              >
+                <Card style={{ width: "24rem" }}>
+                  <Card.Img src={imgUrl}></Card.Img>
+                  <Card.Title>{stream.title}</Card.Title>
+                </Card>
+              </Button>
             </>
           );
         })}
