@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import ReactDOM from "react-dom";
 import axios from "axios";
 import GetToken from "../lib/GetToken";
@@ -14,10 +14,13 @@ function GenerateVideoCard({ gameName }) {
     process.env.NEXT_PUBLIC_TWITCH_API_ROUTE_Get_Followed_Streams;
   const twitchApiRouteGetUsers =
     process.env.NEXT_PUBLIC_TWITCH_API_ROUTE_Get_Users;
+  const twitchApiRotueGetStreamMarkers =
+    process.env.NEXT_PUBLIC_TWITCH_API_ROUTE_Get_Stream_Markers;
 
   const [accessToken, setAccessToken] = useState("");
   const [twitchGameData, setTwitchGameData] = useState([]);
   const [followedStreams, setFollowedStreams] = useState([]);
+  const [userId, setUserId] = useState();
 
   const clientId = "87taxodv5s6tl484merlchj3rufwds";
 
@@ -27,7 +30,6 @@ function GenerateVideoCard({ gameName }) {
   //`http://localhost:3000`;
 
   const redirect_uri = process.env.NEXT_PUBLIC_TWITCH_API_redirect_uri;
-  console.log(process.env.NEXT_PUBLIC_TWITCH_API_redirect_uri);
 
   const port = new URL(redirect_uri).port
     ? ":" + new URL(redirect_uri).port
@@ -135,9 +137,14 @@ function GenerateVideoCard({ gameName }) {
 
     getGameIdAndData();
 
-    //getLoginUserId();
-    getFollowedStream();
+    getLoginUserId();
   }, [accessToken, gameName]);
+
+  useEffect(() => {
+    if (userId) {
+      getFollowedStream(userId);
+    }
+  }, [userId]);
 
   const getGameIds = async () => {
     const searchUrl =
@@ -247,8 +254,7 @@ function GenerateVideoCard({ gameName }) {
       const data = response.data;
 
       if (data) {
-        const userId = data.data[0].id;
-        return userId;
+        setUserId(data.data[0].id);
       }
     }
   };
@@ -256,9 +262,7 @@ function GenerateVideoCard({ gameName }) {
   /**
    * @dependency getLoginUserId()
    */
-  const getFollowedStream = async () => {
-    const userId = await getLoginUserId();
-
+  const getFollowedStream = async (userId) => {
     const response = await axios.get(
       `${twitchApiUrl}/${twitchApiRouteGetFollowedStreams}?user_id=${userId}`,
       {
@@ -277,8 +281,28 @@ function GenerateVideoCard({ gameName }) {
     }
   };
 
-  const openLiveStream = (e) => {
+  const openLiveStream = async (e) => {
     console.log(e.currentTarget);
+    if (!e.currentTarget) {
+      return;
+    }
+
+    const user_id = userId;
+    const video_id = e.currentTarget.id;
+
+    if (user_id && video_id) {
+      const response = await axios.get(
+        `${twitchApiUrl}/${twitchApiRotueGetStreamMarkers}?video_id=${video_id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Client-Id": `${clientId}`,
+          },
+        }
+      );
+
+      console.log(response);
+    }
   };
 
   return (
