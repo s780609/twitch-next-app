@@ -15,7 +15,7 @@ export default function handler(req, res) {
       req.body.message
     ) {
       const email = req.body.email;
-      const subject = req.email.subject;
+      const subject = req.body.subject;
       const message = req.body.message;
 
       const transporter = nodemailer.createTransport({
