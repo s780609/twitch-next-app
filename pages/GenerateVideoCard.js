@@ -27,7 +27,6 @@ function GenerateVideoCard({ gameName }) {
   //`http://localhost:3000`;
 
   const redirect_uri = process.env.NEXT_PUBLIC_TWITCH_API_redirect_uri;
-  console.log(process.env.NEXT_PUBLIC_TWITCH_API_redirect_uri);
 
   const port = new URL(redirect_uri).port
     ? ":" + new URL(redirect_uri).port

@@ -5,6 +5,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Nav, Button, Form, FormControl, Navbar } from "react-bootstrap";
 
 import GenerateVideoCard from "./GenerateVideoCard";
+import MailBox from "../components/MailBox";
 
 export default function Home() {
   const [gameName, setGameName] = useState("Minecraft");
@@ -53,6 +54,24 @@ export default function Home() {
       {/* </Route> */}
       {/* </Switch> */}
       {/* </BrowserRouter> */}
+      <footer
+        style={{
+          textAlign: "center",
+          margin: "auto",
+          backgroundColor: "#C6C5C5",
+          marginTop: "1rem",
+        }}
+      >
+        <br></br>
+        <MailBox
+          style={{
+            width: "50%",
+            textAlign: "center",
+            margin: "auto",
+          }}
+        ></MailBox>
+        <br></br>
+      </footer>
     </div>
   );
 }
