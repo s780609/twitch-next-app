@@ -35,9 +35,11 @@ export default function handler(req, res) {
           html: message,
         })
         .then((info) => {
-          console.log({ info });
+          res.status(200).json(info);
         })
-        .catch(console.error);
+        .catch((error) => {
+          res.status(500).json(error);
+        });
     }
   }
 }
