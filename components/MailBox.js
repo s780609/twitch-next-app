@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Form, Table } from "react-bootstrap";
 import axios from "axios";
+import loader from "archer-loader";
 
 function MailBox({ style }) {
   const [email, setEmail] = useState();
@@ -29,14 +30,25 @@ function MailBox({ style }) {
   };
 
   const sendMail = async () => {
-    const body = {
-      email,
-      subject,
-      message,
-    };
-    console.log(body);
-    const response = await axios.post(`/api/gmail`, body);
-    console.log(response);
+    try {
+      loader.show("#255AC4", 1.5, "Sending...");
+      const body = {
+        email,
+        subject,
+        message,
+      };
+
+      const response = await axios.post(`/api/gmail`, body);
+      if (response && response.status === 200) {
+      } else {
+        throw new Error(response);
+      }
+    } catch (error) {
+      alert(`something went wrong...`);
+      console.log(error);
+    } finally {
+      loader.close();
+    }
   };
 
   return (

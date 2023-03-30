@@ -3,10 +3,6 @@ var https = require("https");
 const nodemailer = require("nodemailer");
 
 export default function handler(req, res) {
-  console.log({ requestBody: req.method });
-
-  //res.status(200).json(req.body);
-
   if (req.method === "POST") {
     if (
       typeof req.body === "object" &&
@@ -14,6 +10,7 @@ export default function handler(req, res) {
       req.body.subject &&
       req.body.message
     ) {
+      console.log("POST");
       const email = req.body.email;
       const subject = req.email.subject;
       const message = req.body.message;
@@ -31,8 +28,8 @@ export default function handler(req, res) {
         .sendMail({
           from: email,
           to: "s780609@gmail.com",
-          subject: subject,
-          html: message,
+          subject: `[twitch-next-app] ${subject}`,
+          html: message + `<br></br>` + `email sender: ${email}`,
         })
         .then((info) => {
           res.status(200).json(info);
