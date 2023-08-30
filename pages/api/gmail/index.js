@@ -20,7 +20,7 @@ export default function handler(req, res) {
         port: 465,
         auth: {
           user: "s780609@gmail.com",
-          pass: "lmzxxmpkrqyxlwcl",
+          pass: process.env.GMAIL_S780609_PASS,
         },
       });
 
